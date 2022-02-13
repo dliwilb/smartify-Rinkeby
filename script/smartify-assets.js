@@ -83,13 +83,17 @@ async function showNFTs() {
             if (ownedCandidates[String(arrayTokenId[i])]["owned"] === true) {
 
                 ownedIndex++;
-                const nftURI = await nftContract.tokenURI(arrayTokenId[i]);
-                // console.log(nftURI);
-                const nftJSON = await fetchJSON(nftURI);
-                // console.log(nftJSON);
-                // console.log(nftJSON.name);
-                // console.log(nftJSON.attributes[0]);
-                // console.log(nftJSON.attributes[0]["value"]);
+                let nftURI = await nftContract.tokenURI(arrayTokenId[i]);
+                const foundIPFSinURI = nftURI.match(/ipfs:\/\/(\w+)/);
+                if (foundIPFSinURI[1] != ''){
+                    nftURI = 'https://ipfs.io/ipfs/' + foundIPFSinURI[1];
+                }
+                
+                let nftJSON = await fetchJSON(nftURI);
+                const foundIPFSinJSONImage = nftJSON.image.match(/ipfs:\/\/(\w+)/);
+                if (foundIPFSinJSONImage[1] != ''){
+                    nftJSON.image = 'https://ipfs.io/ipfs/' + foundIPFSinJSONImage[1];
+                }
 
                 if ( nftContractAddress == '0x87aA4eF35454fEF0B3E796d20Ab609d3c941F46b' ){
                     let [kjlastname, kjfirstname, lastname, firstname] = nftJSON.name.split(/ /);
