@@ -84,14 +84,17 @@ async function showNFTs() {
 
                 ownedIndex++;
                 let nftURI = await nftContract.tokenURI(arrayTokenId[i]);
+                console.log(nftURI);
                 const foundIPFSinURI = nftURI.match(/ipfs:\/\/(\w+)/);
-                if (foundIPFSinURI[1] != ''){
+                console.log(foundIPFSinURI);
+                if (foundIPFSinURI != null){
                     nftURI = 'https://ipfs.io/ipfs/' + foundIPFSinURI[1];
                 }
                 
                 let nftJSON = await fetchJSON(nftURI);
+                console.log(nftJSON.image);
                 const foundIPFSinJSONImage = nftJSON.image.match(/ipfs:\/\/(\w+)/);
-                if (foundIPFSinJSONImage[1] != ''){
+                if (foundIPFSinJSONImage != null){
                     nftJSON.image = 'https://ipfs.io/ipfs/' + foundIPFSinJSONImage[1];
                 }
 
